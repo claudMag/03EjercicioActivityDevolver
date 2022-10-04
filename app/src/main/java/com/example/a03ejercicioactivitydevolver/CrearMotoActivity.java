@@ -7,16 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.a03ejercicioactivitydevolver.modelos.Coche;
+import com.example.a03ejercicioactivitydevolver.modelos.MotoModel;
 
-public class CocheActivity extends AppCompatActivity {
+public class CrearMotoActivity extends AppCompatActivity {
 
     private EditText txtMarca;
     private EditText txtModelo;
-    private EditText txtColor;
-
+    private EditText txtCC;
     private Button btnCrear;
     private Button btnCancelar;
 
@@ -24,7 +22,7 @@ public class CocheActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coche);
+        setContentView(R.layout.activity_moto);
 
         inicializaVistas();
 
@@ -33,39 +31,36 @@ public class CocheActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String marca = txtMarca.getText().toString();
                 String modelo = txtModelo.getText().toString();
-                String color = txtColor.getText().toString();
+                String cc = txtCC.getText().toString();
 
-                if (!marca.isEmpty() && !modelo.isEmpty() && !color.isEmpty()){
-                    Coche coche = new Coche(marca, modelo, color);
+                if (!marca.isEmpty() && !modelo.isEmpty() && !cc.isEmpty()){
+                    MotoModel moto = new MotoModel(marca, modelo, Integer.parseInt(cc));
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("COCHE", coche);
+                    bundle.putSerializable("MOTO", moto);
                     Intent intent = new Intent();
                     intent.putExtras(bundle);
                     setResult(RESULT_OK, intent);
                     finish();
-                }else{
-                    Toast.makeText(CocheActivity.this, "Hay campos vacíos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });
-
     }
 
     private void inicializaVistas() {
-        txtMarca = findViewById(R.id.txtMarcaCoche);
-        txtModelo = findViewById(R.id.txtModeloCoche);
-        txtColor = findViewById(R.id.txtColorCoche);
 
-        btnCancelar = findViewById(R.id.btnCancelarCoche);
-        btnCrear = findViewById(R.id.btnCrearCoche);
+        txtMarca = findViewById(R.id.txtMarcaMoto);
+        txtModelo = findViewById(R.id.txtModeloMoto);
+        txtCC = findViewById(R.id.txtCCMoto);
+        btnCancelar = findViewById(R.id.btnCancelarMoto);
+        btnCrear = findViewById(R.id.btnCrearMoto);
     }
 }

@@ -2,14 +2,11 @@ package com.example.a03ejercicioactivitydevolver.modelos;
 
 import java.io.Serializable;
 
-public class Bici implements Serializable {
+public class BiciModel implements Serializable {
     private String marca;
-    private String pulgadas;
+    private int pulgadas;
 
-    public Bici() {
-    }
-
-    public Bici(String marca, String pulgadas) {
+    public BiciModel(String marca, int pulgadas) {
         this.marca = marca;
         this.pulgadas = pulgadas;
     }
@@ -22,11 +19,11 @@ public class Bici implements Serializable {
         this.marca = marca;
     }
 
-    public String getPulgadas() {
+    public int getPulgadas() {
         return pulgadas;
     }
 
-    public void setPulgadas(String pulgadas) {
+    public void setPulgadas(int pulgadas) {
         this.pulgadas = pulgadas;
     }
 

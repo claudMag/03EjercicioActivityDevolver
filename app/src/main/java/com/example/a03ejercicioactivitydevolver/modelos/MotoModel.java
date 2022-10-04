@@ -1,14 +1,13 @@
 package com.example.a03ejercicioactivitydevolver.modelos;
 
-public class Moto {
+import java.io.Serializable;
+
+public class MotoModel implements Serializable {
     private String marca;
     private String modelo;
     private int cc;
 
-    public Moto() {
-    }
-
-    public Moto(String marca, String modelo, int cc) {
+    public MotoModel(String marca, String modelo, int cc) {
         this.marca = marca;
         this.modelo = modelo;
         this.cc = cc;

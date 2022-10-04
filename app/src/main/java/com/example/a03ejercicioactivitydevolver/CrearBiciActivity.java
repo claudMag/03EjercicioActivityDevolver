@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a03ejercicioactivitydevolver.modelos.Bici;
+import com.example.a03ejercicioactivitydevolver.modelos.BiciModel;
 
-public class BiciActivity extends AppCompatActivity {
-
+public class CrearBiciActivity extends AppCompatActivity {
+    
     private EditText txtMarca;
     private EditText txtPulgadas;
     private Button btnCancelar;
@@ -34,7 +33,7 @@ public class BiciActivity extends AppCompatActivity {
                 String pulgadas = txtPulgadas.getText().toString();
 
                 if (!marca.isEmpty() && !pulgadas.isEmpty()){
-                    Bici bici = new Bici(marca, pulgadas);
+                    BiciModel bici = new BiciModel(marca, Integer.parseInt(pulgadas));
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("BICI", bici);
@@ -44,7 +43,7 @@ public class BiciActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
-                    Toast.makeText(BiciActivity.this, "Hay campos vacíos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearBiciActivity.this, "Hay campos vacíos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -52,8 +51,7 @@ public class BiciActivity extends AppCompatActivity {
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                setResult(RESULT_CANCELED, intent);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });

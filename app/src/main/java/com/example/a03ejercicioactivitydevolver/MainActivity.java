@@ -3,7 +3,6 @@ package com.example.a03ejercicioactivitydevolver;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,71 +13,112 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a03ejercicioactivitydevolver.modelos.Bici;
+import com.example.a03ejercicioactivitydevolver.modelos.BiciModel;
+import com.example.a03ejercicioactivitydevolver.modelos.CocheModel;
+import com.example.a03ejercicioactivitydevolver.modelos.MotoModel;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView lblCoche;
+    //Atributos vista
+    private TextView lblCantidadCoches;
+    private TextView lblCantidadBicis;
+    private TextView lblCantidadMotos;
     private Button btnAddCoche;
-
-    private TextView lblMoto;
     private Button btnAddMoto;
-
-    private TextView lblBici;
     private Button btnAddBici;
-
-    private static int contadorBici = 0;
-    private static int contadorCoche = 0;
-
-    private ActivityResultLauncher <Intent> launcherBici;
-    private ActivityResultLauncher <Intent> launcherMoto;
-    private ActivityResultLauncher <Intent> launcherCoche;
+    //Atributos logica
+    private ArrayList<BiciModel> listaBicis;
+    private ArrayList <CocheModel> listaCoches;
+    private ArrayList <MotoModel> listaMotos;
+    //Atributos eventos
+    private ActivityResultLauncher <Intent> crearBiciLauncher;
+    private ActivityResultLauncher <Intent> crearMotoLauncher;
+    private ActivityResultLauncher <Intent> crearCocheLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        inicializaVistas();
-
-        lblBici.setText(String.valueOf(contadorBici));
-        lblCoche.setText(String.valueOf(contadorCoche));
+        inicializaVariables();
 
         inicializaLaunchers();
 
         btnAddBici.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, BiciActivity.class);
-                launcherBici.launch(intent);
+                crearBiciLauncher.launch(new Intent(MainActivity.this, CrearBiciActivity.class));
             }
         });
 
         btnAddCoche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CocheActivity.class);
-                launcherCoche.launch(intent);
+                crearCocheLauncher.launch(new Intent(MainActivity.this, CrearCocheActivity.class));
+            }
+        });
+
+        btnAddMoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crearMotoLauncher.launch(new Intent(MainActivity.this, CrearMotoActivity.class));
             }
         });
     }
+
 
     private void inicializaLaunchers() {
         inicializaLauncherBici();
 
         inicializaLauncherCoche();
+
+        inicializaLauncherMoto();
     }
 
-    private void inicializaLauncherCoche() {
-        launcherCoche = registerForActivityResult(
+    private void inicializaLauncherMoto() {
+        crearMotoLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == RESULT_OK){
-                            if (result.getData() != null){
-                                contadorCoche++;
-                                lblCoche.setText(String.valueOf(contadorCoche));
+                            if (result.getData() != null && result.getData().getExtras() != null){
+                                MotoModel moto = (MotoModel) result.getData().getExtras().getSerializable("MOTO");
+                                if (moto != null) {
+                                    listaMotos.add(moto);
+                                    lblCantidadMotos.setText(String.valueOf(listaMotos.size()));
+                                }
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "No están los datos", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Cancelada actividad coche", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
+    private void inicializaLauncherCoche() {
+        crearCocheLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK){
+                            if (result.getData() != null && result.getData().getExtras() != null){
+                                CocheModel coche = (CocheModel) result.getData().getExtras().getSerializable("COCHE");
+                                if (coche != null) {
+                                    listaCoches.add(coche);
+                                    lblCantidadCoches.setText("Coches: "+listaCoches.size());
+                                }
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "No están los datos", Toast.LENGTH_SHORT).show();
                             }
                         }
                         else{
@@ -89,34 +129,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inicializaLauncherBici() {
-        launcherBici = registerForActivityResult(
+        crearBiciLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == RESULT_OK){
-                            if (result.getData() != null){
-                                //Bundle bundle = result.getData().getExtras();
-                                //Bici bici = (Bici) bundle.getSerializable("BICI");
-                                contadorBici++;
-                                lblBici.setText(String.valueOf(contadorBici));
+                            if (result.getData() != null && result.getData().getExtras() != null){
+                                BiciModel bici = (BiciModel) result.getData().getExtras().getSerializable("BICI");
+                                if (bici != null) {
+                                    listaBicis.add(bici);
+                                    lblCantidadBicis.setText(String.valueOf(listaBicis.size()));
+                                }
+                            }
+                            else{
+                                Toast.makeText(MainActivity.this, "No están los datos", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else if (result.getResultCode() == RESULT_CANCELED){
+                        else{
                             Toast.makeText(MainActivity.this, "Cancelada Actividad Bici", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void inicializaVistas() {
-        lblCoche = findViewById(R.id.lblCocheMain);
+    private void inicializaVariables() {
+        lblCantidadCoches = findViewById(R.id.lblCocheMain);
+        lblCantidadMotos = findViewById(R.id.lblMotoMain);
+        lblCantidadBicis = findViewById(R.id.lblBiciMain);
         btnAddCoche = findViewById(R.id.btnAddCocheMain);
-
-        lblMoto = findViewById(R.id.lblMotoMain);
         btnAddMoto = findViewById(R.id.btnAddMotoMain);
-
-        lblBici = findViewById(R.id.lblBiciMain);
         btnAddBici = findViewById(R.id.btnAddBiciMain);
+
+        listaCoches = new ArrayList<>();
+        listaMotos = new ArrayList<>();
+        listaCoches = new ArrayList<>();
     }
 }

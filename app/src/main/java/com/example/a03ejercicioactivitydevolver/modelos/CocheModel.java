@@ -2,15 +2,12 @@ package com.example.a03ejercicioactivitydevolver.modelos;
 
 import java.io.Serializable;
 
-public class Coche implements Serializable {
+public class CocheModel implements Serializable {
     private String marca;
     private String modelo;
     private String color;
 
-    public Coche() {
-    }
-
-    public Coche(String marca, String modelo, String color) {
+    public CocheModel(String marca, String modelo, String color) {
         this.marca = marca;
         this.modelo = modelo;
         this.color = color;
